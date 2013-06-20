@@ -1,0 +1,6 @@
+--- 
+cursor_positions: 
+  - :path: app/views/statuses/index.html.erb
+    :cursor_offset: 468
+    :timestamp: 2013-06-20 14:13:04 +00:00
+files_to_retain: 0
