@@ -11,6 +11,7 @@ class StatusesControllerTest < ActionController::TestCase
     assert_not_nil assigns(:statuses)
   end
 
+#POUR BLOQUER CEUX QUI SONT PAS LOGGED IN
   test "should be redirected when not logged in" do
     get :new
     assert_response :redirect
@@ -23,7 +24,27 @@ class StatusesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should create status" do
+  test "should be logged in to post a new status" do
+    post :create, status: {content: "Hello"}
+    assert_response :redirect
+    assert_redirected_to new_user_session_path
+  end
+
+    test "should get edit when logged in" do
+    sign_in users(:jason)
+    get :edit, id: @status
+    assert_response :success 
+  end
+
+    test "should redirect status update when not logged in" do
+    put :update, id: @status, status: { content: @status.content }
+    assert_response :redirect
+    assert_redirected_to new_user_session_path
+  end
+
+#FIN DES TESTS DE BLOQUAGE DE CEUX PAS LOGGED IN
+  test "should create status when logged in" do
+    sign_in users(:jason)
     assert_difference('Status.count') do
       post :create, status: { content: @status.content}
     end
@@ -31,17 +52,20 @@ class StatusesControllerTest < ActionController::TestCase
     assert_redirected_to status_path(assigns(:status))
   end
 
-  test "should show status" do
+  test "should show status when logged in" do
+    sign_in users(:jason)
     get :show, id: @status
     assert_response :success
   end
 
-  test "should get edit" do
+  test "should get edit when signed_in" do
+    sign_in users(:jason)
     get :edit, id: @status
     assert_response :success
   end
 
   test "should update status" do
+    sign_in users(:jason)
     put :update, id: @status, status: { content: @status.content }
     assert_redirected_to status_path(assigns(:status))
   end
