@@ -45,8 +45,8 @@ class StatusesControllerTest < ActionController::TestCase
 #FIN DES TESTS DE BLOQUAGE DE CEUX PAS LOGGED IN
   test "should create status when logged in" do
     sign_in users(:jason)
-    assert_difference('Status.count') do
-      post :create, status: { content: @status.content}
+    assert_difference('Status.count')
+    post :create, status: { content: @status.content}
     end
 
     assert_redirected_to status_path(assigns(:status))
