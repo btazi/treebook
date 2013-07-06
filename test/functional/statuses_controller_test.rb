@@ -91,6 +91,14 @@ class StatusesControllerTest < ActionController::TestCase
     end
     assert_redirected_to statuses_path
   end
+
+  test "should not destroy another user status" do
+    sign_in users(:jason)
+    assert_difference('Status.count', 0) do
+      delete :destroy, id: @status, status: {content: @status.content, user_id: users(:jim).id}
+    end
+    assert_redirected_to statuses_path
+  end
 #fin de ceux logged in
 
 end
