@@ -11,17 +11,11 @@ class StatusesControllerTest < ActionController::TestCase
     assert_not_nil assigns(:statuses)
   end
 
-#POUR BLOQUER CEUX QUI SONT PAS LOGGED IN
-  test "should be redirected when not logged in" do
+#redirect when not logged in
+  test "should be redirected when trying new and not logged in" do
     get :new
     assert_response :redirect
     assert_redirected_to new_user_session_path
-  end
-
-  test "should render the new page when logged in" do
-    sign_in users(:jason)
-    get :new
-    assert_response :success
   end
 
   test "should be logged in to post a new status" do
@@ -30,27 +24,14 @@ class StatusesControllerTest < ActionController::TestCase
     assert_redirected_to new_user_session_path
   end
 
-    test "should get edit when logged in" do
-    sign_in users(:jason)
-    get :edit, id: @status
-    assert_response :success 
-  end
-
-    test "should redirect status update when not logged in" do
+  test "should redirect status update when not logged in" do
     put :update, id: @status, status: { content: @status.content }
     assert_response :redirect
     assert_redirected_to new_user_session_path
   end
+#end redirect when not logged in
 
-#FIN DES TESTS DE BLOQUAGE DE CEUX PAS LOGGED IN
-  test "should create status when logged in" do
-    sign_in users(:jason)
-    assert_difference('Status.count')
-    post :create, status: { content: @status.content}
-    end
-
-    assert_redirected_to status_path(assigns(:status))
-  end
+#Logged in
 
   test "should show status when logged in" do
     sign_in users(:jason)
@@ -58,10 +39,22 @@ class StatusesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should get edit when signed_in" do
+  test "should render the new page when logged in" do
+    sign_in users(:jason)
+    get :new
+    assert_response :success
+  end
+
+  test "should create status when logged in" do
+    sign_in users(:jason)
+    assert_difference('Status.count')
+    post :create, status: { content: @status.content}
+  end
+
+  test "should get edit when logged in" do
     sign_in users(:jason)
     get :edit, id: @status
-    assert_response :success
+    assert_response :success 
   end
 
   test "should update status" do
@@ -70,11 +63,13 @@ class StatusesControllerTest < ActionController::TestCase
     assert_redirected_to status_path(assigns(:status))
   end
 
-  test "should destroy status" do
+  test "should be logged in to destroy status" do
+    sign_in users(:jason)
     assert_difference('Status.count', -1) do
       delete :destroy, id: @status
     end
-
     assert_redirected_to statuses_path
   end
+#fin de ceux logged in
+
 end
