@@ -10,3 +10,9 @@ bob:
   email: bob@kakaboulala.com
   profile_name: bob123
 
+jim:	
+  first_name: jim
+  last_name: tazi
+  email: jim@kakaboulala.com
+  profile_name: jim123
+
